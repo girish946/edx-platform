@@ -59,3 +59,11 @@ jobs:
       - name: run tests
         run: |
           python -Wd -m pytest -p no:randomly --ds=${{ env.settings_path }} ${{ matrix.test_module }}
+
+      - name: save warning reports
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-warning-reports
+          path: |
+            test_root/log/pytest_warnings_*.json
