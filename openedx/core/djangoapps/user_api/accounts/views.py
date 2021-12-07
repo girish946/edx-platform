@@ -48,7 +48,8 @@ from common.djangoapps.student.models import (  # lint-amnesty, pylint: disable=
     UserProfile,
     get_potentially_retired_user_by_username,
     get_retired_email_by_email,
-    get_retired_username_by_username
+    get_retired_username_by_username,
+    is_username_retired
 )
 from common.djangoapps.student.models_api import do_name_change_request
 from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
