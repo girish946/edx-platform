@@ -39,10 +39,7 @@ class TestAdminView(TestCase):
         assert response.status_code == 302
 
     def test_admin_login_redirect(self):
-        with override_waffle_switch(ENABLE_LOGIN_USING_THIRDPARTY_AUTH_ONLY, True):
-            response = self.client.get(reverse('admin:login'))
-            assert response.url == '/login?next=/admin'
-            assert response.status_code == 302
-        with override_waffle_switch(ENABLE_LOGIN_USING_THIRDPARTY_AUTH_ONLY, False):
-            response = self.client.get(reverse('admin:login'))
-            assert response.template_name == ['admin/login.html']
+        """Admin login will redirect towards the site login page."""
+        response = self.client.get(reverse('admin:login'))
+        assert response.url == '/login?next=/admin'
+        assert response.status_code == 302
