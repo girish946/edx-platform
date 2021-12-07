@@ -66,4 +66,4 @@ jobs:
         with:
           name: pytest-warning-reports
           path: |
-            test_root/log/pytest_warnings_*.json
+            test_root/log/*.json
