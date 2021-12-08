@@ -70,4 +70,4 @@ jobs:
         with:
           name: pytest-warning-report-${{ matrix.shard_name }}
           path: |
-            test_root/log/pytest_warnings?.json
+            test_root/log/pytest_warnings*.json
