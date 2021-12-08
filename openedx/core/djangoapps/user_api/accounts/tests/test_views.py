@@ -700,11 +700,11 @@ class TestAccountsAPI(CacheIsolationTestCase, UserAPITestCase):
 
             assert expected_user_message == error_response.data['field_errors'][field]['user_message']
 
-            assert "Value '{value}' is not valid for field '{field}': {messages}" \
-                       .format(value=fails_validation_value,
-                               field=field,
-                               messages=[developer_validation_message]) == \
-                   error_response.data['field_errors'][field]['developer_message']
+            assert "Value '{value}' is not valid for field '{field}': {messages}".format(
+                value=fails_validation_value,
+                field=field,
+                messages=[developer_validation_message]
+            ) == error_response.data['field_errors'][field]['developer_message']
 
         elif field != "account_privacy":
             # If there are no values that would fail validation, then empty string should be supported;
@@ -732,8 +732,9 @@ class TestAccountsAPI(CacheIsolationTestCase, UserAPITestCase):
             Internal helper to check the error messages returned
             """
             assert 'This field is not editable via this API' == data['field_errors'][field_name]['developer_message']
-            assert "The '{}' field cannot be edited." \
-                       .format(field_name) == data['field_errors'][field_name]['user_message']
+            assert "The '{}' field cannot be edited.".format(
+                field_name
+            ) == data['field_errors'][field_name]['user_message']
 
         for field_name in ["username", "date_joined", "is_active", "profile_image", "requires_parental_consent"]:
             response = self.send_patch(client, {field_name: "will_error", "gender": "o"}, expected_status=400)
