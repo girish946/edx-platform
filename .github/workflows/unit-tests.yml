@@ -68,6 +68,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2
         with:
-          name: pytest-warning-reports
+          name: pytest-warning-report-${{ matrix.shard_name }}
           path: |
-            test_root/log/*.json
+            test_root/log/pytest_warnings?.json
