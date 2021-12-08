@@ -68,6 +68,20 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2
         with:
-          name: pytest-warning-report-${{ matrix.shard_name }}
+          name: pytest-warnings-json-${{ matrix.shard_name }}
           path: |
             test_root/log/pytest_warnings*.json
+
+  collect-warnings-report:
+    runs-on: ubuntu-20.04
+    needs: [run-tests]
+    strategy:
+      matrix: ${{ needs.strategy.matrix }}
+    steps:
+      - name: collect pytest warnings files
+        uses: actions/download-artifact@v2
+        with:
+          name: pytest-warnings-json-${{ needs.strategy.matrix.shard_name }}
+
+      - name: display structure of downloaded files
+        run: ls -R
