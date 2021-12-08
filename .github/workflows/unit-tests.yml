@@ -64,24 +64,27 @@ jobs:
         run: |
           python -Wd -m pytest -p no:randomly --ds=${{ env.settings_path }} ${{ env.unit_test_paths }}
 
+      - name: rename warnings json file
+        if: success()
+        run: |
+          mv test_root/log/pytest_warnings.json test_root/log/pytest_warnings_${{ matrix.shard_name }}.json
+
       - name: save warning reports
         if: success()
         uses: actions/upload-artifact@v2
         with:
-          name: pytest-warnings-json-${{ matrix.shard_name }}
+          name: pytest-warnings-json
           path: |
             test_root/log/pytest_warnings*.json
 
   collect-warnings-report:
     runs-on: ubuntu-20.04
     needs: [run-tests]
-    strategy:
-      matrix: ${{ needs.strategy.matrix }}
     steps:
       - name: collect pytest warnings files
         uses: actions/download-artifact@v2
         with:
-          name: pytest-warnings-json-${{ needs.strategy.matrix.shard_name }}
+          name: pytest-warnings-json
 
       - name: display structure of downloaded files
         run: ls -R
