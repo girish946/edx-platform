@@ -67,7 +67,8 @@ jobs:
       - name: rename warnings json file
         if: success()
         run: |
-          mv test_root/log/pytest_warnings.json test_root/log/pytest_warnings_${{ matrix.shard_name }}.json
+          cd test_root/log
+          [ -f pytest_warnings.json ] mv pytest_warnings.json pytest_warnings_${{ matrix.shard_name }}.json
 
       - name: save warning reports
         if: success()
