@@ -36,7 +36,7 @@ class CanReplaceUsername(permissions.BasePermission):
         return request.user.username == getattr(settings, "USERNAME_REPLACEMENT_WORKER", False)
 
 
-class CanGetAccountInfoWithUserId(permissions.BasePermission):
+class CanGetAccountInfoUsingId(permissions.BasePermission):
     """
     Grants access to AccountViewSet if the requesting user is a superuser/staff
     and reqesting to get account info based on LMS User id

@@ -10,18 +10,20 @@ from unittest import mock
 
 import ddt
 import pytz
-from common.djangoapps.student.models import PendingEmailChange, UserProfile
-from common.djangoapps.student.tests.factories import TEST_PASSWORD, RegistrationFactory, UserFactory
 from django.conf import settings
 from django.test.testcases import TransactionTestCase
 from django.test.utils import override_settings
 from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
+
+from common.djangoapps.student.models import PendingEmailChange, UserProfile
+from common.djangoapps.student.tests.factories import TEST_PASSWORD, RegistrationFactory, UserFactory
 from openedx.core.djangoapps.oauth_dispatch.jwt import create_jwt_for_user
 from openedx.core.djangoapps.user_api.accounts import ACCOUNT_VISIBILITY_PREF_KEY
 from openedx.core.djangoapps.user_api.models import UserPreference
 from openedx.core.djangoapps.user_api.preferences.api import set_user_preference
 from openedx.core.djangolib.testing.utils import CacheIsolationTestCase, skip_unless_lms
-from rest_framework.test import APIClient, APITestCase
 
 from .. import ALL_USERS_VISIBILITY, CUSTOM_VISIBILITY, PRIVATE_VISIBILITY
 
@@ -384,9 +386,9 @@ class TestAccountsAPI(CacheIsolationTestCase, UserAPITestCase):
         response = self.send_get(client, query_parameters=f'email={self.user.email}')
         self._verify_full_account_response(response)
 
-    def test_get_account_by_user_id(self):
+    def test_successful_get_account_by_user_id(self):
         """
-        Test that requesting a user id search works.
+        Test that request using lms user id by a staff user successfully retrieves Account Info.
         """
         api_client = "staff_client"
         user = "staff_user"
@@ -396,6 +398,21 @@ class TestAccountsAPI(CacheIsolationTestCase, UserAPITestCase):
 
         response = self.send_get(client, query_parameters=f'lms_user_id={self.user.id}')
         self._verify_full_account_response(response)
+
+    def test_unsuccessful_get_account_by_user_id(self):
+        """
+        Test that requesting using lms user id by a normal user fails to retrieve Account Info.
+        """
+        api_client = "client"
+        user = "user"
+        client = self.login_client(api_client, user)
+        self.create_mock_profile(self.user)
+        set_user_preference(self.user, ACCOUNT_VISIBILITY_PREF_KEY, PRIVATE_VISIBILITY)
+
+        response = self.send_get(
+            client, query_parameters=f'lms_user_id={self.user.id}', expected_status=status.HTTP_403_FORBIDDEN
+        )
+        assert response.data.get('detail') == 'You do not have permission to perform this action.'
 
     def test_search_emails(self):
         client = self.login_client('staff_client', 'staff_user')
