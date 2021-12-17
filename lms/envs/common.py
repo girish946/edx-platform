@@ -948,6 +948,15 @@ FEATURES = {
     # .. toggle_target_removal_date: 2021-10-01
     # .. toggle_tickets: 'https://openedx.atlassian.net/browse/MICROBA-1405'
     'ENABLE_V2_CERT_DISPLAY_SETTINGS': False,
+
+    # .. toggle_name: FEATURES['ENABLE_BLOCKSTORE']
+    # .. toggle_implementation: DjangoSetting
+    # .. toggle_default: True
+    # .. toggle_description: Enable blockstore from the edx-platform service itself
+    # .. toggle_use_cases: open_edx
+    # .. toggle_creation_date: 2021-12-16
+    # .. toggle_tickets: https://github.com/edx/blockstore/pull/144
+    'ENABLE_BLOCKSTORE': True,
 }
 
 # Specifies extra XBlock fields that should available when requested via the Course Blocks API
@@ -1034,6 +1043,7 @@ STATUS_MESSAGE_PATH = ENV_ROOT / "status_message.json"
 
 DATABASE_ROUTERS = [
     'openedx.core.lib.django_courseware_routers.StudentModuleHistoryExtendedRouter',
+    'openedx.core.lib.django_courseware_routers.BlockstoreRouter',
     'edx_django_utils.db.read_replica.ReadReplicaRouter',
 ]
 
@@ -1591,6 +1601,16 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'localhost',
         'NAME': 'edxapp_csmh',
+        'OPTIONS': {},
+        'PASSWORD': 'password',
+        'PORT': '3306',
+        'USER': 'edxapp001'
+    },
+    'blockstore':{
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'NAME': 'blockstore_db',
         'OPTIONS': {},
         'PASSWORD': 'password',
         'PORT': '3306',
@@ -3199,7 +3219,10 @@ INSTALLED_APPS = [
     'edx_ace',
 
     # For save for later
-    'lms.djangoapps.save_for_later'
+    'lms.djangoapps.save_for_later',
+
+    # blockstore for authoring, discovering and resusing the content
+    'openedx.core.djangoapps.blockstore',
 ]
 
 ######################### CSRF #########################################
