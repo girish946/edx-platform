@@ -1043,7 +1043,7 @@ STATUS_MESSAGE_PATH = ENV_ROOT / "status_message.json"
 
 DATABASE_ROUTERS = [
     'openedx.core.lib.django_courseware_routers.StudentModuleHistoryExtendedRouter',
-    'openedx.core.lib.django_courseware_routers.BlockstoreRouter',
+    'openedx.core.lib.blockstore_router.BlockstoreRouter',
     'edx_django_utils.db.read_replica.ReadReplicaRouter',
 ]
 
@@ -3222,7 +3222,7 @@ INSTALLED_APPS = [
     'lms.djangoapps.save_for_later',
 
     # blockstore for authoring, discovering and resusing the content
-    'openedx.core.djangoapps.blockstore',
+    'lms.djangoapps.blockstore',
 ]
 
 ######################### CSRF #########################################

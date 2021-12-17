@@ -18,7 +18,7 @@ class BlockstoreRouter:
         
         return (
             model._meta.app_label == 'blockstore' and
-            (type(model).__name__ in model_types_for_blockstore
+            type(model).__name__ in self.model_types_for_blockstore
         )
 
     def _is_csm_h(self, model):
@@ -29,7 +29,7 @@ class BlockstoreRouter:
             model._meta.app_label == 'blockstore' and
             (
                 type(model).__name__ == 'blockstore' or
-                getattr(model, '__name__', '') in model_types_for_blockstore
+                getattr(model, '__name__', '') in self.model_types_for_blockstore
             )
         )
 

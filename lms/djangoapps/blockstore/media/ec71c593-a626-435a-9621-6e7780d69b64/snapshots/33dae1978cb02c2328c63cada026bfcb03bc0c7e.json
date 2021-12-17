@@ -1,0 +1,16 @@
+{
+  "_type": "snapshot",
+  "_version": 1,
+  "bundle_uuid": "ec71c593-a626-435a-9621-6e7780d69b64",
+  "created_at": "2021-12-10T10:05:32.739289+00:00",
+  "files": {
+    "problem/62d7505f-869d-4cda-acec-aa8ae8aaa68e/definition.xml": [
+      false,
+      10,
+      "bd77567518bf34ed0a9c789cb41ecd86e2e190bb",
+      "application/xml"
+    ]
+  },
+  "hash_digest": "33dae1978cb02c2328c63cada026bfcb03bc0c7e",
+  "links": {}
+}
