@@ -72,17 +72,17 @@ class DraftInline(admin.StackedInline):
             return 3
         return max(obj.drafts.count(), 3)
 
-
+@admin.register(Bundle)
 class BundleAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'slug', 'title')
     readonly_fields = ('uuid',)
     inlines = (BundleVersionInline, DraftInline)
     search_fields = ('uuid', 'title')
 
-
+@admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'uuid')
 
 
-admin.site.register(Bundle, BundleAdmin)
-admin.site.register(Collection, CollectionAdmin)
+#admin.site.register(Bundle, BundleAdmin)
+#admin.site.register(Collection, CollectionAdmin)

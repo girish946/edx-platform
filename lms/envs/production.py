@@ -476,6 +476,16 @@ for name, database in DATABASES.items():
             'HOST': os.environ.get('DB_MIGRATION_HOST', database['HOST']),
             'PORT': os.environ.get('DB_MIGRATION_PORT', database['PORT']),
         })
+DATABASES['blockstore'] ={
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'edx.devstack.mysql57',
+        'NAME': 'blockstore_db',
+        'OPTIONS': {},
+        'PASSWORD': 'password',
+        'PORT': '3306',
+        'USER': 'edxapp001'
+    }
 
 XQUEUE_INTERFACE = AUTH_TOKENS['XQUEUE_INTERFACE']
 

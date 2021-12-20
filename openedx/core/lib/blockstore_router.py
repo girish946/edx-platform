@@ -8,30 +8,7 @@ class BlockstoreRouter:
     A Database Router that separates Blockstore into its own database.
     """
 
-    DATABASE_NAME = 'blockstore_db'
-    model_types_for_blockstore = ['Collection', 'Bundle', 'BundleVersion', 'Draft', 'BundleLink']
-
-    def _is_csm(self, model):
-        """
-        Return True if ``model`` is Blockstore.apps.bundles.Bundle
-        """
-        
-        return (
-            model._meta.app_label == 'blockstore' and
-            type(model).__name__ in self.model_types_for_blockstore
-        )
-
-    def _is_csm_h(self, model):
-        """
-        Return True if ``model`` is Blockstore.apps.bundles.Bundle.
-        """
-        return (
-            model._meta.app_label == 'blockstore' and
-            (
-                type(model).__name__ == 'blockstore' or
-                getattr(model, '__name__', '') in self.model_types_for_blockstore
-            )
-        )
+    DATABASE_NAME = 'blockstore'
 
     def db_for_read(self, model, **hints):  # pylint: disable=unused-argument
         """
@@ -42,7 +19,7 @@ class BlockstoreRouter:
         - Draft
         - BundleLink
         """
-        if self._is_csm_h(model):
+        if model._meta.app_label == 'blockstore':
             return self.DATABASE_NAME
         else:
             return None
@@ -56,7 +33,8 @@ class BlockstoreRouter:
         - Draft
         - BundleLink
         """
-        if self._is_csm_h(model):
+        print(model._meta.app_label)
+        if model._meta.app_label == 'blockstore':
             return self.DATABASE_NAME
         else:
             return None
@@ -88,7 +66,7 @@ class BlockstoreRouter:
         """
         if model_name is not None:
             model = hints.get('model')
-            if model is not None and self._is_csm_h(model):
+            if model is not None and model._meta.app_label == 'blockstore':
                 return db == self.DATABASE_NAME
         if db == self.DATABASE_NAME:
             return False
